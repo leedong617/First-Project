@@ -13,7 +13,8 @@ import javax.swing.JTextField;
 
 import com.itwill.shop.member.Member;
 import com.itwill.shop.member.MemberService;
-import com.itwill.shop.test.Main2;
+import com.itwill.shop.ui.Main2;
+
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
@@ -93,7 +94,7 @@ public class MemberLoginPanel extends JPanel {
 						mainFrame.shopTabbedPane.setSelectedIndex(0);
 						
 					} else if (result == 0) {
-						memberLoginIdMsgLB.setText("정보 다틀린데?");
+						memberLoginIdMsgLB.setText("정보가 틀리네??");
 						memberLoginIdTF.requestFocus();
 						memberLoginIdTF.setSelectionStart(0);
 						memberLoginIdTF.setSelectionEnd(userid.length());
@@ -165,7 +166,8 @@ public class MemberLoginPanel extends JPanel {
 		System.out.println("로그인성공");
 		mainFrame.shopTabbedPane.setEnabledAt(3, true);
 		mainFrame.shopTabbedPane.setEnabledAt(4, true);
-		mainFrame.cartService.deleteCartItemByUserId(userId);
+		mainFrame.cartPanel.displayCartList();
+		mainFrame.orderPanel.displayOrderList();
 		if(mainFrame.loginMember.getM_Id().equals("admin")) {
 			mainFrame.memberTabbedpane.setEnabledAt(0,false);
 			mainFrame.memberTabbedpane.setEnabledAt(1,false );
@@ -178,12 +180,29 @@ public class MemberLoginPanel extends JPanel {
 			mainFrame.memberTabbedpane.setEnabledAt(0,false );
 			mainFrame.memberTabbedpane.setEnabledAt(1,false );
 			mainFrame.memberTabbedpane.setEnabledAt(2,true);
-			
 			mainFrame.memberTabbedpane.setSelectedIndex(2);
-
-
+			mainFrame.shopTabbedPane.setSelectedIndex(0);
+//			mainFrame.memberInfoPanel.memberInfo(mainFrame.loginMember);
+			mainFrame.memberInfoPanel.memberInfo(mainFrame.loginMember);
 		
 		}
+	}
+	
+	
+	public void logoutProcess() {
+		
+		mainFrame.loginMember = null;
+		
+		memberLoginIdTF.setText("");
+		memberLoginPwTF.setText("");
+		
+		
+		mainFrame.memberTabbedpane.setEnabledAt(0, true);
+		mainFrame.memberTabbedpane.setEnabledAt(1, true);
+		mainFrame.memberTabbedpane.setEnabledAt(2, false);
+		
+		mainFrame.shopTabbedPane.setEnabledAt(3, false);
+		mainFrame.shopTabbedPane.setEnabledAt(4, false);
 	}
 	
 	

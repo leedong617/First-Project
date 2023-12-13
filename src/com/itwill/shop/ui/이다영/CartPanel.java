@@ -14,15 +14,17 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import com.itwill.shop.cart.Cart;
-import com.itwill.shop.test.Main2;
-import javax.swing.SwingConstants;
+import com.itwill.shop.member.Member;
+import com.itwill.shop.ui.Main2;
 
 public class CartPanel extends JPanel {
 	
@@ -108,8 +110,10 @@ public class CartPanel extends JPanel {
 				
 				try {
 					mainFrame.orderService.create(mainFrame.loginMember.getM_Id());
-					displayCartList();
+					mainFrame.orderPanel.displayOrderList();
 					mainFrame.shopTabbedPane.setSelectedIndex(4);
+					mainFrame.cartService.deleteCartItemByUserId(mainFrame.loginMember.getM_Id());
+					mainFrame.cartPanel.displayCartList();
 				}catch(Exception e2) {
 					e2.printStackTrace();
 				}
@@ -194,9 +198,11 @@ public class CartPanel extends JPanel {
 	
 	public void displayCartList() throws Exception{
 			
+			JCheckBox[] cartCB = null;
 			cartListContentPanel.removeAll();
 			List<Cart> cartList = mainFrame.cartService.findCartItemByAll(mainFrame.loginMember.getM_Id());
 			totPrice = 0;
+			cartCB = new JCheckBox[cartList.size()];
 			/*********************for문 시작*****************/
 			for(Cart cart : cartList) {
 				// 카트 상품 디테일 패널
@@ -264,6 +270,7 @@ public class CartPanel extends JPanel {
 								bookPriceLabel.setText(new DecimalFormat("#,###원").format(c.getProduct().getP_price() * cartSelectedQty));
 								totPrice = totPrice + c.getProduct().getP_price() * cartSelectedQty;
 								cartTotalPriceLabel.setText(new DecimalFormat("#,###원").format(totPrice));
+								
 								
 								
 							}catch (Exception e1) {

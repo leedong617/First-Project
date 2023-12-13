@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
 import com.itwill.shop.cart.Cart;
 import com.itwill.shop.product.Product;
 import com.itwill.shop.product.ProductService;
-import com.itwill.shop.test.Main2;
+import com.itwill.shop.ui.Main2;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -147,6 +147,7 @@ public class ProductSelfImprovementListPanel extends JPanel {
 						String cartQtyStr = (String)cartComboBox.getSelectedItem();
 						int cartQty = Integer.parseInt(cartQtyStr);
 						mainFrame.orderService.create(mainFrame.loginMember.getM_Id(), product.getP_no(), cartQty);
+						mainFrame.orderPanel.displayOrderList();
 						mainFrame.changePanel(4, -1, -1, null);
 						cartComboBox.setSelectedItem("1");
 						

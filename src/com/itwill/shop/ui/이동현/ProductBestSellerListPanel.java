@@ -9,7 +9,7 @@ import com.itwill.shop.member.Member;
 import com.itwill.shop.member.MemberService;
 import com.itwill.shop.product.Product;
 import com.itwill.shop.product.ProductService;
-import com.itwill.shop.test.Main2;
+import com.itwill.shop.ui.Main2;
 
 import java.awt.Color;
 
@@ -135,7 +135,12 @@ public class ProductBestSellerListPanel extends JPanel {
 					System.out.println("click");
 					Map data=new HashMap();
 					data.put("product", product);
-					mainFrame.changePanel(2,3,-1,data);
+					try {
+						mainFrame.changePanel(2,3,-1,data);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					mainFrame.productTabbedPane.setEnabledAt(3, true);
 				}
 			});
@@ -164,6 +169,7 @@ public class ProductBestSellerListPanel extends JPanel {
 						String cartQtyStr = (String)cartComboBox.getSelectedItem();
 						int cartQty = Integer.parseInt(cartQtyStr);
 						mainFrame.orderService.create(mainFrame.loginMember.getM_Id(), product.getP_no(), cartQty);
+						mainFrame.orderPanel.displayOrderList();
 						mainFrame.changePanel(4, -1, -1, null);
 						cartComboBox.setSelectedItem("1");
 						
@@ -173,7 +179,12 @@ public class ProductBestSellerListPanel extends JPanel {
 					}
 					
 				}else {
-					mainFrame.changePanel(1, -1, 0, null);
+					try {
+						mainFrame.changePanel(1, -1, 0, null);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					JOptionPane.showMessageDialog(null, "로그인이 필요한 서비스입니다.");
 					cartComboBox.setSelectedItem("1");
 				}
@@ -205,7 +216,12 @@ public class ProductBestSellerListPanel extends JPanel {
 					}
 					
 				}else {
-					mainFrame.changePanel(1, -1, 0, null);
+					try {
+						mainFrame.changePanel(1, -1, 0, null);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					JOptionPane.showMessageDialog(null, "로그인이 필요한 서비스입니다.");
 					cartComboBox.setSelectedItem("1");
 				}

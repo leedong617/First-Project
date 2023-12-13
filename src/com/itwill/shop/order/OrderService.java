@@ -1,6 +1,5 @@
 package com.itwill.shop.order;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class OrderService {
 	 * 주문목록
 	 */
 	public List<Order> orderList(String m_id) throws Exception{
-		return orderDao.findOrderByUserId(m_id);
+		return orderDao.findOrderBym_Id(m_id);
 	}
 	/*
 	 * 주문+주문아이템 목록
@@ -45,8 +44,8 @@ public class OrderService {
 	/*
 	 * 주문+주문아이템 상세보기
 	 */
-	public Order orderWithOrderItem(int o_no)throws Exception{
-		return orderDao.findByOrderNo(o_no);
+	public Order orderWithOrderItem(String m_id, int o_no)throws Exception{
+		return orderDao.findByOrderNo(m_id, o_no);
 	}
 	/*
 	 * 상품에서 직접주문
@@ -57,7 +56,6 @@ public class OrderService {
 		OrderItem orderItem=new OrderItem(0, oi_qty, p_no, product);
 		ArrayList<OrderItem> orderItemList=new ArrayList<OrderItem>();
 		orderItemList.add(orderItem);
-//		(int o_no, String o_desc, int o_price, Date o_date, String m_id, List<OrderItem> orderItemList)
 		Order newOrder=
 				new Order(0,
 						orderItemList.get(0).getProduct().getP_name()+"외 "+(oi_qty-1)+" 개", 
@@ -78,13 +76,6 @@ public class OrderService {
 		int o_tot_price=0;
 		int oi_tot_qty=0;
 		String o_desc=null;
-//		for (Cart cart : cartList) {
-//			OrderItem orderItem=new OrderItem(0,cart.getCart_qty(),0, cart.getProduct());
-//			orderItemList.add(orderItem);
-//			o_tot_price+=orderItem.getOi_qty()*orderItem.getProduct().getP_price();
-//			oi_tot_count+=orderItem.getOi_qty();
-//		}
-//		String o_desc = orderItemList.get(0).getProduct().getP_name()+"외 "+(oi_tot_count)+" 개";
 		for (Cart cart : cartList) {
 			OrderItem orderItem = new OrderItem(0,cart.getCart_qty(),0,cart.getProduct());
 			orderItemList.add(orderItem);
@@ -128,5 +119,21 @@ public class OrderService {
 			cartDao.deleteByCartNo(Integer.parseInt(cart_item_noStr_array[i]));
 		}
 		return 0;
+	}
+	
+	
+	
+	//오더 총액 계산
+	public int orderTotPrice(String userId) throws Exception {
+		int totPrice = 0;
+		List<Order> orderList = orderDao.findOrderByUserId(userId);
+		for (Order order : orderList) {
+			totPrice += order.getO_price();
+		}
+		return totPrice;
+	}
+	public int orderNoPrice(String m_id,int o_no) throws Exception {
+		Order order = orderDao.findByOrderNo(m_id, o_no);
+		return order.getO_price();
 	}
 }

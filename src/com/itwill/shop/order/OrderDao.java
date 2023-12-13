@@ -106,14 +106,13 @@ public class OrderDao {
 	}
 
 	/*
-	 * 주문전체(특정사용자)
+	 * 주문전체(특정사용자) - displayorder 용
 	 */
-	public List<Order> findOrderByUserId(String m_id) throws Exception {
+	public List<Order> findOrderBym_Id(String m_id) throws Exception {
 		List<Order> orderList = new ArrayList<Order>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
 		try {
 			con = dataSource.getConnection();
 			/*
@@ -128,8 +127,41 @@ public class OrderDao {
 						rs.getString("o_desc"),
 						rs.getInt("o_price"),
 						rs.getDate("o_date"),
-						rs.getString("m_id"),
-						null));
+						rs.getString("m_id")));
+			}
+		} finally {
+			if (con != null) {
+				con.close();
+			}
+		}
+		System.out.println(orderList);
+		return orderList;
+	}
+	
+	
+	/*
+	 * 주문전체(특정사용자)
+	 */
+	public List<Order> findOrderByUserId(String sUserId) throws Exception {
+		ArrayList<Order> orderList = new ArrayList<Order>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = dataSource.getConnection();
+			/*
+			 * select * from orders where userid='guard1'
+			 */
+			pstmt = con.prepareStatement(OrderSQL.ORDER_SELECT_BY_USERID);
+			pstmt.setString(1, sUserId);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				orderList.add(new Order(rs.getInt("o_no"),
+								rs.getString("o_desc"),
+								rs.getInt("o_price"),
+								rs.getDate("o_date"),
+								rs.getString("m_id"),null));
 			}
 		} finally {
 			if (con != null) {
@@ -153,22 +185,19 @@ public class OrderDao {
 		try {
 			con = dataSource.getConnection();
 			/*
-			 * select * from orders where m_id='guard1'
+			 * select * from orders where userid='guard1'
 			 */
 			pstmt1 = con.prepareStatement(OrderSQL.ORDER_SELECT_BY_USERID);
 			pstmt1.setString(1, m_id);
 			rs1 = pstmt1.executeQuery();
 			while (rs1.next()) {
-				orderList.add(new Order(
-						rs1.getInt("o_no"),
-						rs1.getString("o_desc"),
-						rs1.getInt("o_price"),
+				orderList.add(new Order(rs1.getInt("o_no"), rs1.getString("o_desc"), rs1.getInt("o_price"),
 						rs1.getDate("o_date"),
-						rs1.getString("m_id"),
-						null));
+						rs1.getString("m_id"),null));
 			}
 				
 			pstmt2 = con.prepareStatement(OrderSQL.ORDER_SELECT_WITH_ORDERITEM_BY_O_NO);
+			
 			for (int i = 0; i < orderList.size(); i++) {
 				Order tempOrder = orderList.get(i);
 				/*
@@ -187,17 +216,9 @@ public class OrderDao {
 													rs2.getString("m_id"),null);
 					do {
 						orderWithOrderItem.getOrderItemList()
-								.add(new OrderItem(
-										rs2.getInt("oi_no"),
-										rs2.getInt("oi_qty"),
-										rs2.getInt("o_no"),
-											new Product(
-													rs2.getInt("p_no"),
-													rs2.getString("p_name"),
-													rs2.getInt("p_price"),
-													rs2.getString("p_image"),
-													rs2.getString("p_desc"),
-													rs2.getInt("p_category"))));
+								.add(new OrderItem(rs2.getInt("oi_no"), rs2.getInt("oi_qty"), rs2.getInt("o_no"),
+										new Product(rs2.getInt("p_no"), rs2.getString("p_name"), rs2.getInt("p_price"),
+												rs2.getString("p_image"), rs2.getString("p_desc"), rs2.getInt("p_category"))));
 					} while (rs2.next());
 				}
 				orderList.set(i, orderWithOrderItem);
@@ -209,11 +230,12 @@ public class OrderDao {
 		}
 		return orderList;
 	}
+  
 
 	/*
 	 * 주문1개보기(주문상세리스트)
 	 */
-	public Order findByOrderNo(int o_no) throws Exception {
+	public Order findByOrderNo(String m_id, int o_no) throws Exception {
 
 		Order order = null;
 		Connection con = null;
@@ -226,7 +248,9 @@ public class OrderDao {
 		 * oi.p_no=p.p_no where o.userid=? and o.o_no = ?
 		 */
 		pstmt = con.prepareStatement(OrderSQL.ORDER_SELECT_WITH_ORDERITEM_BY_O_NO);
+		
 		pstmt.setInt(1, o_no);
+		
 		rs = pstmt.executeQuery();
 		/*
 		  O_NO   O_DESC 	  O_DATE 	O_PRICE  USERID  OI_NO  OI_QTY O_NO P_NO P_NAME 	  P_PRICE   P_IMAGE 	P_DESC 
