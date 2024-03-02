@@ -16,12 +16,7 @@
 | 카테고리별 상품리스트</br> 검색서비스</br> 상품 상세탭 |
 
 ### 🛠️개발 환경 및 기술 스택
-<img src="https://img.shields.io/badge/java 1.8-2C2255?style=for-the-badge&logo=openJDK&logoColor=white"> 
-<img src="https://img.shields.io/badge/jdbc-000000?style=for-the-badge&logo=amazondocumentdb&logoColor=white"> 
-<img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white">
-<img src="https://img.shields.io/badge/swing-2F2625?style=for-the-badge&logo=coffeescript&logoColor=white">
-<img src="https://img.shields.io/badge/eclipse se-2C2255?style=for-the-badge&logo=eclipse&logoColor=white"> 
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/java 1.8-2C2255?style=for-the-badge&logo=openJDK&logoColor=white"> <img src="https://img.shields.io/badge/jdbc-000000?style=for-the-badge&logo=amazondocumentdb&logoColor=white"> <img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white"><img src="https://img.shields.io/badge/swing-2F2625?style=for-the-badge&logo=coffeescript&logoColor=white"><img src="https://img.shields.io/badge/eclipse se-2C2255?style=for-the-badge&logo=eclipse&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
 ### ⭐상세
 <https://github.com/leedong617/First-Project/> github주소<br>
